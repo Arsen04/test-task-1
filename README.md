@@ -34,7 +34,7 @@ Now you can access your application at [http://localhost:8888](http://localhost:
 
 ```
 .
-├── other/badCode/        # Legacy code for refactoring
+├── other/badCode         # Legacy code for refactoring
 ├── src/                  # PSR-4 autoloaded source code
 ├── composer.json         # Dependencies
 ├── index.php             # Entry point
