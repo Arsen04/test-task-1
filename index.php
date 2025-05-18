@@ -6,6 +6,7 @@ use App\Http\Http;
 use App\Http\Request;
 use App\Repository\OrderRepository;
 use App\Service\OrderService;
+use App\Shared\Logging\Logger;
 use App\Validator\OrderValidator;
 use Nyholm\Psr7\Factory\Psr17Factory;
 
@@ -36,7 +37,8 @@ $request = new Request(
 );
 
 try {
-    $orderValidator = new OrderValidator();
+    $logger = new Logger();
+    $orderValidator = new OrderValidator(logger: $logger);
     $orderRepository = new OrderRepository();
     $orderService = new OrderService($orderRepository);
     $controller = new OrderController($orderValidator, $orderService);
