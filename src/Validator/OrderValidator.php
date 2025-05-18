@@ -21,12 +21,6 @@ final class OrderValidator
             );
         }
 
-        if (!isset($requestContent['id']) || !$this->isValidId($requestContent['id'])) {
-            throw new InvalidDataException(
-                message: 'Invalid or missing "id".',
-            );
-        }
-
         if (!isset($requestContent['items']) || !$this->hasValidItems($requestContent['items'])) {
             throw new InvalidDataException(
                 message: 'Invalid or missing "items".',
@@ -34,11 +28,6 @@ final class OrderValidator
         }
 
         return true;
-    }
-
-    private function isValidId(mixed $id): bool
-    {
-        return is_int($id);
     }
 
     private function hasValidItems(mixed $items): bool

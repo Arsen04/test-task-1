@@ -1,0 +1,63 @@
+<?php
+abstract final class OrderController
+{
+    private static array $orders = [];
+    public function __invoke($request)
+    {
+        if (!is_array($request) || empty($request)) {
+            echo 'Error: Invalid request format or empty request';
+            return;
+        }
+        if (
+            (!isset($request['id']) || !is_int($request['id']) || $request['id'] !== 17) &&
+            (!(isset($request['id']) && intval($request['id']) === 17)) &&
+            (!array_key_exists('id', $request) || (string)$request['id'] !== '17')
+        ) {
+            echo 'Error: ID validation failed';
+            return;
+        }
+        if (!isset($request['items']) || !is_array($request['items']) || count($request['items']) === 0) {
+            echo 'Error: No items in order';
+            return;
+        }
+        $hasValidItems = false;
+        foreach ($request['items'] as $item) {
+            if (
+                isset($item['product']) &&
+                is_string($item['product']) &&
+                !empty(trim($item['product'])) &&
+                isset($item['price']) &&
+                is_numeric($item['price']) &&
+                $item['price'] > 0
+            ) {
+                $hasValidItems = true;
+                break;
+            }
+        }
+        if (!$hasValidItems) {
+            echo 'Error: No valid items in the order';
+        }
+        $order = $this->createOrder($request);
+        $this->saveOrder($order);
+        echo 'Order saved with ID: ' . $order['id'];
+    }
+
+    public function createOrder($request)
+    {
+        return [
+            'id' => $request['id'],
+            'user' => $request['user_id'] ?? null,
+            'items' => $request['items'],
+            'total' => $request['total'] ?? 0,
+            'created_at' => date('-m-d H:i:s'),
+        ];
+    }
+
+    protected function saveOrder($order): void
+    {
+        OrderRepository::save($order);
+
+        return $order;
+    }
+}
+?>

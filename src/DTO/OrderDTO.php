@@ -7,7 +7,6 @@ namespace App\DTO;
 final readonly class OrderDTO
 {
     public function __construct(
-        public int $id,
         public ?int $userId,
         public array $items,
         public float $total,
@@ -17,7 +16,6 @@ final readonly class OrderDTO
     public static function fromRequest(array $data): self
     {
         return new self(
-            id: (int) $data['id'],
             userId: isset($data['user_id']) ? (int) $data['user_id'] : null,
             items: $data['items'],
             total: isset($data['total']) ? (float) $data['total'] : 0.0,
